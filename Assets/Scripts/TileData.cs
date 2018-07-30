@@ -4,8 +4,10 @@ using UnityEngine;
 [System.Serializable]
 public class TileData
 {
+    // For use in the unity editor
     public TileColor InitialColor;
 
+    // For use by the program
     private TileColor _backingColor;
     public TileColor CurrentColor
     {
