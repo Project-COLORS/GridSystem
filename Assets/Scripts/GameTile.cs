@@ -19,8 +19,8 @@ public class GameTile : MonoBehaviour
 
     private void Start()
     {
-        Row = (int) transform.position.x;
-        Col = (int) transform.position.z;
+        Row = (int) (Mathf.Round(transform.position.x));
+        Col = (int) (Mathf.Round(transform.position.z));
         _initialPosition = transform.position;
 
         Properties.OnCurrentColorChange += UpdateTileColor;
@@ -46,5 +46,13 @@ public class GameTile : MonoBehaviour
             var changeVector = new Vector3(0, 0.10f * (float) Math.Sin(-Time.fixedTime + Row + Col), 0);
             transform.position = _initialPosition + changeVector;
         }
+    }
+
+    //shift row/col value to be non negative according to the lowest x/z coordinate determined
+    //when initialising the game grid
+    public void offsetRowCol(int offsetx,int offsetz)
+    {
+        Row-=offsetx;
+        Col-=offsetz;
     }
 }

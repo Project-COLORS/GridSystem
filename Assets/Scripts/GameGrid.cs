@@ -9,7 +9,7 @@ public class GameGrid : MonoBehaviour
     public GameObject BoundObject;
     public event EventHandler OnInitialized;
     public bool IsInitialized { get; private set; }
-    
+
     private int _totalTiles;
     private int _initializedTiles;
     private GameTile[] _initialTileList;
@@ -21,7 +21,7 @@ public class GameGrid : MonoBehaviour
     {
         IsInitialized = false;
     }
-    
+
     private void Start()
     {
         _initializedTiles = 0;
@@ -58,7 +58,7 @@ public class GameGrid : MonoBehaviour
         {
             return _tiles[row, col];
         }
-        
+
         return null;
     }
 
@@ -75,32 +75,53 @@ public class GameGrid : MonoBehaviour
     {
         public readonly int Rows;
         public readonly int Columns;
-        
+
         public Dimensions(int rows, int columns)
         {
             Rows = rows;
             Columns = columns;
         }
     }
-    
+
     private void AttemptToInitializeAfterTiles(object source, EventArgs e)
     {
         _initializedTiles++;
         if (_initializedTiles != _totalTiles) return;
-        
+
         DoInitialize();
     }
 
     private void DoInitialize()
     {
+        //get the lowest coordinate of the tiles
+        int xmin=_initialTileList.Min(tile => tile.Row);
+        int zmin=_initialTileList.Min(tile => tile.Col);
+        Debug.LogFormat("tile min coordinate: {0},{1}",xmin,zmin);
+
         // Need to add one because the highest index will always be # rows/cols - 1
-        _rows = _initialTileList.Max(tile => tile.Row) + 1;
-        _cols = _initialTileList.Max(tile => tile.Col) + 1;
+        //also subtract by the lowest coordiante, to offset it in case the lowest coordinate
+        //is not 0,0
+        _rows = _initialTileList.Max(tile => tile.Row) - xmin + 1;
+        _cols = _initialTileList.Max(tile => tile.Col) - zmin + 1;
 
         _tiles = new GameTile[_rows, _cols];
 
         foreach (var tile in _initialTileList)
         {
+            tile.offsetRowCol(xmin,zmin);
+
+            //detect tiles with identical coordinates (round error occured)
+            //if the dimensions calculated earlier are correct and there are no duplicate coordinates,
+            //it should guarantee that every tile position is correct
+            if (_tiles[tile.Row,tile.Col])
+            {
+                Debug.LogFormat("conflict at {0},{1}",tile.Row+xmin,tile.Col+zmin);
+                Debug.LogFormat("real coord: {0},{1}",tile.transform.position.x,tile.transform.position.y,tile.transform.position.z);
+                Debug.LogFormat("real coord rounded: {0},{1}",
+                    Mathf.Round(tile.transform.position.x),
+                    Mathf.Round(tile.transform.position.z));
+            }
+
             _tiles[tile.Row, tile.Col] = tile;
         }
 
