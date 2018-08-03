@@ -1,6 +1,7 @@
+﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{267DDD27-3B99-1F0D-010E-0F97A6C81877}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GridSystem", "Assembly-CSharp.csproj", "{267DDD27-3B99-1F0D-010E-0F97A6C81877}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

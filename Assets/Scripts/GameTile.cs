@@ -16,13 +16,13 @@ public class GameTile : MonoBehaviour
     {
         IsInitialized = false;
     }
-    
+
     private void Start()
     {
         Row = (int) transform.position.x;
         Col = (int) transform.position.z;
         _initialPosition = transform.position;
-        
+
         Properties.OnCurrentColorChange += UpdateTileColor;
 
         IsInitialized = true;
