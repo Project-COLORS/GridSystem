@@ -103,6 +103,7 @@ public class GameGrid : MonoBehaviour
         //is not 0,0
         _rows = _initialTileList.Max(tile => tile.Row) - xmin + 1;
         _cols = _initialTileList.Max(tile => tile.Col) - zmin + 1;
+        Debug.LogFormat("grid dimensions: {0},{1}",_rows,_cols);
 
         _tiles = new GameTile[_rows, _cols];
 
